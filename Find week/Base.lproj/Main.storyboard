@@ -30,28 +30,41 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yV1-H2-KZX">
                                 <rect key="frame" x="153.5" y="390" width="68" height="40"/>
                                 <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="40"/>
-                                <color key="textColor" red="0.73333333333333328" green="0.27450980392156865" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.73333333329999995" green="0.27450980390000002" blue="0.15686274510000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pbl-qj-2ff">
+                                <rect key="frame" x="0.0" y="625" width="375" height="42"/>
+                                <color key="backgroundColor" red="0.90196078431372551" green="0.66666666666666663" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="DINCondensed-Bold" family="DIN Condensed" pointSize="30"/>
+                                <state key="normal" title="Set the start date">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.8784313725490196" green="0.6470588235294118" blue="0.14901960784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="yV1-H2-KZX" firstAttribute="top" secondItem="O4g-bM-s7P" secondAttribute="bottom" constant="47" id="7IC-lK-u6Q"/>
+                            <constraint firstItem="Pbl-qj-2ff" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="C4W-8X-qy2"/>
                             <constraint firstItem="PxQ-Ox-0Rd" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="FBA-XH-PZB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Pbl-qj-2ff" secondAttribute="trailing" id="M2U-Bm-bvs"/>
                             <constraint firstItem="yV1-H2-KZX" firstAttribute="centerX" secondItem="O4g-bM-s7P" secondAttribute="centerX" id="Np1-oO-xcu"/>
                             <constraint firstItem="O4g-bM-s7P" firstAttribute="centerX" secondItem="PxQ-Ox-0Rd" secondAttribute="centerX" id="aNP-Gc-Tce"/>
+                            <constraint firstItem="Pbl-qj-2ff" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="u4Q-2X-6S5"/>
                             <constraint firstItem="O4g-bM-s7P" firstAttribute="top" secondItem="PxQ-Ox-0Rd" secondAttribute="bottom" constant="47" id="yH8-hB-2Ah"/>
                             <constraint firstItem="PxQ-Ox-0Rd" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="zOE-Op-Lle"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="datePicker" destination="O4g-bM-s7P" id="swz-SL-bAW"/>
                         <outlet property="resultLabel" destination="yV1-H2-KZX" id="h0F-Dk-Smx"/>
+                        <outlet property="startDateButton" destination="Pbl-qj-2ff" id="fia-iR-NWT"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="132" y="107"/>
+            <point key="canvasLocation" x="132" y="106.59670164917542"/>
         </scene>
     </scenes>
 </document>
