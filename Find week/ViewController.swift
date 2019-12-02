@@ -14,37 +14,28 @@ class ViewController: UIViewController {
     @IBOutlet weak var startDateField: UITextField!
     
     let startDatePicker = UIDatePicker()
-    
-    // MARK: Установка даты начала отсчета
-     func setStartDate() -> Date? {
-         
-         let calendar = Calendar.current
-         var dateComponents = DateComponents()
-         
-         dateComponents.day = 2
-         dateComponents.month = 9
-         dateComponents.year = 2019
-         
-         guard let date = calendar.date(from: dateComponents) else {
-             return nil
-         }
-         
-         return date
-     }
-    
-    var startDate = Date()
+    var startDate:Date?
     
     override func viewDidLoad() {
-
         super.viewDidLoad()
-        startDate = setStartDate()!
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        let dateS = formatter.string(from: startDate)
-        startDateField.text = "Start date is \(dateS)"
         
-        datePicker.minimumDate = startDate
-        resultLabel.text = findWeek(Date(), startDate)
+        if UserDefaults.standard.value(forKey: "startDate") == nil {
+            datePicker.isEnabled = false
+            resultLabel.text = "Please set the start date"
+        }
+        else {
+            startDate = UserDefaults.standard.value(forKey: "startDate") as? Date
+            let formatter = DateFormatter()
+            formatter.dateFormat = "d MMMM yyyy"
+            guard let startDate = startDate else {return}
+            let dateS = formatter.string(from: startDate)
+            startDateField.text = "Start date is \(dateS)"
+            
+            datePicker.minimumDate = startDate
+            resultLabel.text = findWeek(Date(), startDate)
+            
+            }
+
         startDateField.inputView = startDatePicker
         startDatePicker.datePickerMode = .date
         startDatePicker.backgroundColor = resultLabel.textColor
@@ -58,23 +49,23 @@ class ViewController: UIViewController {
 
         
         startDateField.inputAccessoryView = toolbar
-        
-        
     }
     
     
     @IBAction func rollDatePicker(_ sender: UIDatePicker) {
-       
+        guard let startDate = startDate else {return}
         resultLabel.text = findWeek(sender.date, startDate)
     }
     
  
-    
     // MARK: Узнаем четная неделя или нет
     func findWeek(_ currentDate:Date = Date(), _ startDate: Date) -> String {
-        
         let calendar = Calendar.current
         var result = String()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE"
+        let currentDay = formatter.string(from: currentDate)
                
         let diffInDays = Calendar.current.dateComponents([.day], from: startDate, to: currentDate).day
             
@@ -91,9 +82,9 @@ class ViewController: UIViewController {
         let numberOfWeek = (days + dateCorrection) / 7
         switch numberOfWeek.isMultiple(of: 2){
                  case true:
-                     result = "White week"
+                     result = "\(currentDay), white week"
                  case false:
-                     result = "Blue week"
+                     result = "\(currentDay), blue week"
                  }
                  return result
             }
@@ -104,6 +95,7 @@ class ViewController: UIViewController {
         view.endEditing(true)
     }
     
+    
     func getDateFromStartDatePicker() {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM yyyy"
@@ -113,7 +105,9 @@ class ViewController: UIViewController {
         let date = formatter.date(from:dateS)!
         startDate = date
         datePicker.minimumDate = startDate
-        resultLabel.text = findWeek(datePicker.date, startDate)
+        UserDefaults.standard.setValue(startDate, forKey: "startDate")
+        resultLabel.text = findWeek(datePicker.date, date)
+        datePicker.isEnabled = true
         
         
     }
