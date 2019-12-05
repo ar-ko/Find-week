@@ -1,0 +1,14 @@
+/* blueWeek */
+", blue week" = ", синяя неделя";
+
+/* whiteWeek */
+", white week" = ", белая неделя";
+
+/* resultLabel */
+"Please set the start date" = "Пожалуйста, установите дату начала обучения";
+
+/* startDateField */
+"Start date is " = "Начало обучения: ";
+
+/* diffInDays */
+"diffInDays is incorrect" = "Ошибка в вычислении даты";

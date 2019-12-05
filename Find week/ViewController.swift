@@ -14,66 +14,66 @@ class ViewController: UIViewController {
     @IBOutlet weak var startDateField: UITextField!
     
     let startDatePicker = UIDatePicker()
-    var startDate:Date?
+    var startDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if UserDefaults.standard.value(forKey: "startDate") == nil {
             datePicker.isEnabled = false
-            resultLabel.text = "Please set the start date"
+            resultLabel.font = resultLabel.font.withSize(35)
+            resultLabel.text = NSLocalizedString("Please set the start date", comment: "resultLabel")
+            
         }
         else {
-            startDate = UserDefaults.standard.value(forKey: "startDate") as? Date
-            let formatter = DateFormatter()
-            formatter.dateFormat = "d MMMM yyyy"
-            guard let startDate = startDate else {return}
-            let dateS = formatter.string(from: startDate)
-            startDateField.text = "Start date is \(dateS)"
+            startDate = UserDefaults.standard.value(forKey: "startDate") as! Date
+            let date = dateToString(date: startDate, in: "d MMMM yyyy")
+            startDateField.text = NSLocalizedString("Start date is ", comment: "startDateField") + date
             
             datePicker.minimumDate = startDate
-            resultLabel.text = findWeek(Date(), startDate)
             
+            resultLabel.text = findWeek(from: startDate)
             }
 
-        startDateField.inputView = startDatePicker
-        startDatePicker.datePickerMode = .date
-        startDatePicker.backgroundColor = resultLabel.textColor
-        
+        setStartDatePicker()
+        startDateField.inputAccessoryView = setToolbar()
+    }
+    
+    
+    func setToolbar() -> UIToolbar {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneAction))
         let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         
         toolbar.setItems([flexSpace, doneButton], animated: true)
-
-        
-        startDateField.inputAccessoryView = toolbar
+        return toolbar
+    }
+    
+    func setStartDatePicker() {
+        startDateField.inputView = startDatePicker
+        startDatePicker.datePickerMode = .date
+        startDatePicker.backgroundColor = resultLabel.textColor
     }
     
     
     @IBAction func rollDatePicker(_ sender: UIDatePicker) {
-        guard let startDate = startDate else {return}
-        resultLabel.text = findWeek(sender.date, startDate)
+        resultLabel.text = findWeek(from: startDate, to: sender.date)
     }
     
  
     // MARK: Узнаем четная неделя или нет
-    func findWeek(_ currentDate:Date = Date(), _ startDate: Date) -> String {
-        let calendar = Calendar.current
-        var result = String()
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE"
-        let currentDay = formatter.string(from: currentDate)
+    func findWeek(from startDate: Date, to currentDate:Date = Date()) -> String {
+        let currentDay = dateToString(date: currentDate, in: "EEEE")
                
         let diffInDays = Calendar.current.dateComponents([.day], from: startDate, to: currentDate).day
             
         guard let days: Int = diffInDays else {
-            return "diffInDays is incorrect"
+            return NSLocalizedString("diffInDays is incorrect", comment: "diffInDays")
         }
         
         // Коррекция даты, находим начало недели
+        let calendar = Calendar.current
         var dateCorrection = calendar.component(.weekday, from: startDate) - 2
         if calendar.component(.weekday, from: startDate) == 1 {
             dateCorrection += 7
@@ -82,11 +82,10 @@ class ViewController: UIViewController {
         let numberOfWeek = (days + dateCorrection) / 7
         switch numberOfWeek.isMultiple(of: 2){
                  case true:
-                     result = "\(currentDay), white week"
+                     return currentDay + NSLocalizedString(", white week", comment: "whiteWeek")
                  case false:
-                     result = "\(currentDay), blue week"
+                     return currentDay + NSLocalizedString(", blue week", comment: "blueWeek")
                  }
-                 return result
             }
     
     
@@ -97,19 +96,28 @@ class ViewController: UIViewController {
     
     
     func getDateFromStartDatePicker() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy"
-        let dateS = formatter.string(from: startDatePicker.date)
+        let dateS = dateToString(date: startDatePicker.date, in: "d MMMM yyyy")
         
-        startDateField.text = "Start date is \(dateS)"
-        let date = formatter.date(from:dateS)!
+        //Устанавливаем стартовую дату. Приобразуем в строку и обратно для корректного определения даты.
+        //Если делать иначе, то при первом выборе стартовая дата определяется некорректно
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "d MMMM yyyy"
+        startDateField.text = NSLocalizedString("Start date is ", comment: "startDateField") + dateS
+        let date = dateFormatter.date(from:dateS)!
         startDate = date
-        datePicker.minimumDate = startDate
+        
         UserDefaults.standard.setValue(startDate, forKey: "startDate")
-        resultLabel.text = findWeek(datePicker.date, date)
+        resultLabel.text = findWeek(from: startDate, to: datePicker.date)
+        
+        datePicker.minimumDate = startDate
         datePicker.isEnabled = true
-        
-        
+        resultLabel.font = resultLabel.font.withSize(40)
+    }
+    
+    func dateToString(date:Date, in format:String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: date)
     }
 }
 

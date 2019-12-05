@@ -1,0 +1,9 @@
+/* Class = "UITextField"; text = "Set the start date here"; ObjectID = "Cf1-Ak-eLw"; */
+"Cf1-Ak-eLw.text" = "Установить дату начала обучения";
+
+/* Class = "UILabel"; text = "Find week"; ObjectID = "PxQ-Ox-0Rd"; */
+"PxQ-Ox-0Rd.text" = "Find week";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "yV1-H2-KZX"; */
+"yV1-H2-KZX.text" = "Label";
+
